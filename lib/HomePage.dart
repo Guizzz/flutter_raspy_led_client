@@ -117,7 +117,7 @@ class MyHomePageState extends State<HomePage> {
               Slider(
                   value: ledGreenValue,
                   min: 0,
-                  max: 255,
+                  max: 256,
                   activeColor: Colors.green,
                   label: ledGreenValue.toInt().toString(),
                   onChanged: (double value) {
