@@ -29,7 +29,7 @@ class MyHomePageState extends State<HomePage> {
   double ledBlueValue = 0;
   double ledRedValue = 0;
   double ledGreenValue = 0;
-  String lightValue;
+  int lightValue;
 
   //final WebSocketChannel channel = IOWebSocketChannel.connect('ws://192.168.1.22:7777');
 
@@ -85,8 +85,28 @@ class MyHomePageState extends State<HomePage> {
                             MediaQuery.of(context).size.height / (4/3)
                         );
                         //rainbow(50);
-                        },
+                      },
                     ),
+                    ButtonClikAnimation(
+                      onTap: () 
+                      {
+                        setLight();
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width / 3,
+                        height: MediaQuery.of(context).size.height / 8,
+                        decoration: BoxDecoration(
+                            borderRadius: new BorderRadius.circular(10.0),
+                            color: Colors.white,
+                            boxShadow: [Decorations.shadow()]),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: FittedBox(
+                              child: Image(image: AssetImage('assets/lightbulb.png'))
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -135,7 +155,7 @@ class MyHomePageState extends State<HomePage> {
     );
   }
 
-  Future<bool> getStatus() async {
+  getStatus() async {
     final url = Uri.http("192.168.1.22:7777", "/getLedStatus");
 
     final response = await http.get(url);
@@ -144,8 +164,13 @@ class MyHomePageState extends State<HomePage> {
       setState(() {
         risposta = response.body;
         Map<String, dynamic> user = jsonDecode(risposta);
+        print(user);
         print("rainbow: "+user["rainbowStatus"].toString());
         
+        ledRedValue = user["red"].toDouble();
+        ledGreenValue = user["green"].toDouble();
+        ledBlueValue = user["blue"].toDouble();
+        lightValue = user["light"];
         rainbowRunning = user["rainbowStatus"]["rainbowRunning"];
         rainbowBrightness = user["rainbowStatus"]["rainbowBrightness"];
         rainbowTime = user["rainbowStatus"]["time"];
@@ -158,7 +183,27 @@ class MyHomePageState extends State<HomePage> {
     }
   }
 
-  Future<bool> setRedLED(int val) async {
+  setLight() async
+  {
+    await getStatus();
+    int val = lightValue == 0 ? 1 : 0;
+    Map<String, String> parameters = {'value': val.toString()};
+    final url = Uri.http("192.168.1.22:7777", "/setLight", parameters);
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      setState(() {
+        risposta = response.body;
+      });
+    } else {
+      setState(() {
+        risposta = "Errore: " + response.body;
+      });
+    }
+
+  }
+
+  setRedLED(int val) async {
     Map<String, String> parameters = {'red': val.toString()};
     final url = Uri.http("192.168.1.22:7777", "/setLed", parameters);
     final response = await http.get(url);
@@ -172,7 +217,7 @@ class MyHomePageState extends State<HomePage> {
       });
     }
   }
-  Future<bool> setBlueLED(int val) async {
+  setBlueLED(int val) async {
     Map<String, String> parameters = {'blue': val.toString()};
     final url = Uri.http("192.168.1.22:7777", "/setLed", parameters);
     final response = await http.get(url);
@@ -186,7 +231,7 @@ class MyHomePageState extends State<HomePage> {
       });
     }
   }
-  Future<bool> setGreenLED(int val) async {
+  setGreenLED(int val) async {
     Map<String, String> parameters = {'green': val.toString()};
     final url = Uri.http("192.168.1.22:7777", "/setLed", parameters);
     final response = await http.get(url);
