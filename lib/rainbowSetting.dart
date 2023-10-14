@@ -11,7 +11,7 @@ class RainbowPage {
 
   BuildContext context;
   final Function() notifyParent;
-  RainbowPage({this.context, this.notifyParent});
+  RainbowPage({required this.context, required this.notifyParent});
 
   Widget show() {
     return GestureDetector(
@@ -23,8 +23,7 @@ class RainbowPage {
           appBar: null,
           backgroundColor: Colors.transparent,
           body: Stack(
-              overflow: Overflow.clip,
-              children: [
+              clipBehavior: Clip.hardEdge, children: [
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
@@ -138,9 +137,11 @@ class RainbowPage {
     if (response.statusCode == 200) {
       MyHomePageState.risposta = response.body;
       notifyParent();
+      return true;
     } else {
       MyHomePageState.risposta = "Errore: " + response.body;
       notifyParent();
+      return false;
     }
   }
 
@@ -151,9 +152,11 @@ class RainbowPage {
     if (response.statusCode == 200) {
       MyHomePageState.risposta = response.body;
       notifyParent();
+      return true;
     } else {
       MyHomePageState.risposta = "Errore: " + response.body;
       notifyParent();
+      return false;
     }
   }
 
@@ -161,13 +164,14 @@ class RainbowPage {
     final url = Uri.http("192.168.1.22:7777", "/stopRainbow");
     final response = await http.get(url);
     if (response.statusCode == 200) {
-
       MyHomePageState.risposta = response.body;
       notifyParent();
+      return true;
     } else {
 
       MyHomePageState.risposta = "Errore: " + response.body;
       notifyParent();
+      return false;
     }
   }
 

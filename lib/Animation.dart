@@ -1,5 +1,4 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
@@ -7,13 +6,13 @@ class AnimationTransaction
 {
   BuildContext context;
 
-  AnimationTransaction({this.context});
+  AnimationTransaction({required this.context});
 
   slideUpAnimation(Widget box, double bottomPointStart, double leftPointStart, double topPointStop)
   {
     return showGeneralDialog<void>(
       context: context,
-      pageBuilder: (context, anim1, anim2) {},
+      pageBuilder: (context, anim1, anim2) { return Container();},
       barrierDismissible: true,
       barrierColor: Colors.black.withOpacity(0.3),
       barrierLabel: '',
@@ -36,12 +35,13 @@ class AnimationTransaction
   }
 }
 
+// ignore: must_be_immutable
 class ButtonClikAnimation extends StatefulWidget
 {
-  Container _box;
+  Widget? _box;
   var _function;
 
-  ButtonClikAnimation({Widget child, var onTap} )
+  ButtonClikAnimation({required Widget child, var onTap} )
   {
     this._box = child;
     this._function = onTap;
@@ -54,10 +54,10 @@ class ButtonClikAnimation extends StatefulWidget
 
 class ButtonClikAnimationState extends State<ButtonClikAnimation> with SingleTickerProviderStateMixin
 {
-  Widget box;
+  Widget? box;
   var function;
 
-  AnimationController _animationController;
+  AnimationController? _animationController;
 
   ButtonClikAnimationState(this.box,  this.function);
 
@@ -71,7 +71,7 @@ class ButtonClikAnimationState extends State<ButtonClikAnimation> with SingleTic
       lowerBound: 0.0,
       upperBound: 0.1,
     );
-    _animationController.addListener(() {
+    _animationController?.addListener(() {
       setState(() {});
     });
   }
@@ -79,11 +79,11 @@ class ButtonClikAnimationState extends State<ButtonClikAnimation> with SingleTic
   @override
   Widget build(BuildContext context)
   {
-    double scale = 1 - _animationController.value;
+    double scale = 1 - _animationController!.value;
     return GestureDetector(
       onTap: ()
       {
-        _animationController.forward().then((value) => _animationController.reverse()).then((value) => function());
+        _animationController!.forward().then((value) => _animationController!.reverse()).then((value) => function());
       },
       child: Transform.scale(
         scale: scale,

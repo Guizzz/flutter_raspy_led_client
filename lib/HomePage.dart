@@ -1,19 +1,15 @@
 import 'dart:convert';
 
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_raspy_led_client/rainbowSetting.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:web_socket_channel/io.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 
 import 'Animation.dart';
 import 'Decorations.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key, this.title}) : super(key: key);
+  HomePage({required Key key, required this.title}) : super(key: key);
   final String title;
   @override
   MyHomePageState createState() => MyHomePageState();
@@ -29,7 +25,7 @@ class MyHomePageState extends State<HomePage> {
   double ledBlueValue = 0;
   double ledRedValue = 0;
   double ledGreenValue = 0;
-  int lightValue;
+  late int lightValue;
 
   //final WebSocketChannel channel = IOWebSocketChannel.connect('ws://192.168.1.22:7777');
 
@@ -147,7 +143,7 @@ class MyHomePageState extends State<HomePage> {
                     });
                   }),
               Text(risposta),
-              ButtonClikAnimation()
+              //ButtonClikAnimation(child: null,)
         ],
           ),
         ),
