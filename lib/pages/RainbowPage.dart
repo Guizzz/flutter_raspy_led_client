@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 import 'package:http/http.dart' as http;
 
-import 'Animation.dart';
-import 'Decorations.dart';
+import '../utility/Animation.dart';
+import '../utility/Decorations.dart';
 import 'HomePage.dart';
 
 class RainbowPage {

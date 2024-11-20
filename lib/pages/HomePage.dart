@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_raspy_led_client/rainbowSetting.dart';
+import 'package:flutter_raspy_led_client/pages/RainbowPage.dart';
 
 import 'package:http/http.dart' as http;
 
-import 'Animation.dart';
-import 'Decorations.dart';
+import '../utility/Animation.dart';
+import '../utility/Decorations.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({required Key key, required this.title}) : super(key: key);
